@@ -344,6 +344,24 @@ function init() {
     
     // 按钮事件
     document.getElementById('startBtn').addEventListener('click', () => {
+        if (gameOver) {
+            // 如果游戏结束，重置游戏
+            board = createMatrix(COLS, ROWS);
+            score = 0;
+            level = 1;
+            lines = 0;
+            gameOver = false;
+            
+            // 更新显示
+            document.getElementById('score').textContent = score;
+            document.getElementById('level').textContent = level;
+            document.getElementById('lines').textContent = lines;
+            
+            // 重置玩家
+            player.nextPiece = createPiece();
+            resetPlayer();
+        }
+        
         paused = !paused;
         if (!paused) {
             lastTime = performance.now();
@@ -374,9 +392,8 @@ function init() {
         update();
     });
     
-    // 开始游戏循环
-    lastTime = performance.now();
-    update();
+    // 初始化时不立即开始游戏，等待用户点击开始按钮
+    paused = true;
 }
 
 // 触屏控制事件绑定
