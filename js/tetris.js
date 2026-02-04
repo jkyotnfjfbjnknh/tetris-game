@@ -66,18 +66,18 @@ function drawMatrix(matrix, offset) {
                 ctx.fillRect(
                     (x + offset.x) * BLOCK_SIZE,
                     (y + offset.y) * BLOCK_SIZE,
-                    BLOCK_SIZE,
-                    BLOCK_SIZE
+                    BLOCK_SIZE - 1,
+                    BLOCK_SIZE - 1
                 );
                 
                 // 添加方块边框效果
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 1;
                 ctx.strokeRect(
                     (x + offset.x) * BLOCK_SIZE,
                     (y + offset.y) * BLOCK_SIZE,
-                    BLOCK_SIZE,
-                    BLOCK_SIZE
+                    BLOCK_SIZE - 1,
+                    BLOCK_SIZE - 1
                 );
             }
         });
@@ -91,27 +91,31 @@ function drawNextPiece() {
     nextCtx.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
     
     if (player.nextPiece) {
-        const offsetX = (nextCanvas.width / BLOCK_SIZE - player.nextPiece[0].length) / 2;
-        const offsetY = (nextCanvas.height / BLOCK_SIZE - player.nextPiece.length) / 2;
+        // 根据方块大小调整缩放比例
+        const cellSize = Math.min(20, Math.floor(nextCanvas.width / player.nextPiece[0].length), Math.floor(nextCanvas.height / player.nextPiece.length));
+        
+        // 计算居中偏移
+        const offsetX = (nextCanvas.width - player.nextPiece[0].length * cellSize) / 2;
+        const offsetY = (nextCanvas.height - player.nextPiece.length * cellSize) / 2;
         
         player.nextPiece.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
                     nextCtx.fillStyle = COLORS[value];
                     nextCtx.fillRect(
-                        (x + offsetX) * BLOCK_SIZE,
-                        (y + offsetY) * BLOCK_SIZE,
-                        BLOCK_SIZE,
-                        BLOCK_SIZE
+                        offsetX + x * cellSize,
+                        offsetY + y * cellSize,
+                        cellSize - 1,
+                        cellSize - 1
                     );
                     
                     nextCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-                    nextCtx.lineWidth = 2;
+                    nextCtx.lineWidth = 1;
                     nextCtx.strokeRect(
-                        (x + offsetX) * BLOCK_SIZE,
-                        (y + offsetY) * BLOCK_SIZE,
-                        BLOCK_SIZE,
-                        BLOCK_SIZE
+                        offsetX + x * cellSize,
+                        offsetY + y * cellSize,
+                        cellSize - 1,
+                        cellSize - 1
                     );
                 }
             });
@@ -302,10 +306,7 @@ function init() {
     nextCanvas = document.getElementById('nextPiece');
     nextCtx = nextCanvas.getContext('2d');
     
-    // 设置画布比例
-    ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
-    nextCtx.scale(BLOCK_SIZE, BLOCK_SIZE);
-    
+    // 注意：这里不使用scale，而是直接计算像素坐标
     // 初始化游戏板
     board = createMatrix(COLS, ROWS);
     
