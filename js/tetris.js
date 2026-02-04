@@ -238,7 +238,7 @@ function playerHardDrop() {
     while (!collide(board, player)) {
         player.pos.y++;
     }
-    player.pos.y--;
+    player.pos.y--; // 回退到最后一个有效位置
     merge(board, player);
     sweepRows();
     resetPlayer();
@@ -379,5 +379,31 @@ function init() {
     update();
 }
 
+// 触屏控制事件绑定
+function bindTouchControls() {
+    document.getElementById('leftBtn').addEventListener('click', () => {
+        playerMove(-1);
+    });
+    
+    document.getElementById('rightBtn').addEventListener('click', () => {
+        playerMove(1);
+    });
+    
+    document.getElementById('downBtn').addEventListener('click', () => {
+        playerDrop();
+    });
+    
+    document.getElementById('rotateBtn').addEventListener('click', () => {
+        playerRotate(1);
+    });
+    
+    document.getElementById('hardDropBtn').addEventListener('click', () => {
+        playerHardDrop();
+    });
+}
+
 // 页面加载完成后初始化游戏
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    bindTouchControls();
+});

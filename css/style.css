@@ -129,6 +129,44 @@ button:hover {
     color: #ddd;
 }
 
+.touch-controls {
+    margin-top: 20px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    border-radius: 50%;
+    background: #4ecca3;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.control-btn.special {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+    background: #ff6b6b;
+}
+
+.control-btn:active {
+    transform: scale(0.9);
+    background: #3da58a;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
     .game-container {
@@ -144,5 +182,22 @@ button:hover {
     .next-piece, .game-controls {
         width: 100%;
         max-width: 200px;
+    }
+    
+    /* 在移动设备上显示触屏控制 */
+    .touch-controls {
+        display: flex;
+    }
+    
+    .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .control-btn.special {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
     }
 }

@@ -2,10 +2,10 @@
   "name": "tetris-game",
   "version": "1.0.0",
   "description": "A classic Tetris game built with HTML, CSS, and JavaScript",
-  "main": "index.html",
   "scripts": {
     "start": "serve -s .",
-    "dev": "http-server -o"
+    "dev": "http-server -o",
+    "build": "echo 'Build completed'"
   },
   "keywords": [
     "tetris",
