@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+        }
+        #board {
+            border: 2px solid #4ecca3;
+            background: #111;
+        }
+        button {
+            background: #4ecca3;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .log {
+            background: #333;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            height: 200px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <h1>俄罗斯方块调试页面</h1>
+    <canvas id="board" width="300" height="600"></canvas>
+    <div>
+        <button onclick="testDraw()">测试绘制</button>
+        <button onclick="logState()">记录状态</button>
+        <button onclick="startGame()">开始游戏</button>
+    </div>
+    <div class="log" id="log"></div>
+    
+    <script>
+        // 日志函数
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += message + '<br>';
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        // 测试绘制
+        function testDraw() {
+            try {
+                const canvas = document.getElementById('board');
+                const ctx = canvas.getContext('2d');
+                
+                // 重置画布
+                ctx.fillStyle = '#111';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制一个简单的方块
+                ctx.fillStyle = '#4ecca3';
+                ctx.fillRect(50, 50, 30, 30);
+                
+                log('✓ 绘制测试完成');
+            } catch (e) {
+                log('✗ 绘制测试失败: ' + e.message);
+            }
+        }
+        
+        // 记录当前状态
+        function logState() {
+            try {
+                log('--- 当前状态 ---');
+                log('Canvas元素存在: ' + !!document.getElementById('board'));
+                
+                const canvas = document.getElementById('board');
+                const ctx = canvas.getContext('2d');
+                log('Canvas上下文存在: ' + !!ctx);
+                
+                log('---');
+            } catch (e) {
+                log('✗ 状态记录失败: ' + e.message);
+            }
+        }
+        
+        // 尝试启动游戏
+        function startGame() {
+            log('尝试启动游戏...');
+            
+            // 检查canvas
+            const canvas = document.getElementById('board');
+            if (!canvas) {
+                log('✗ Canvas元素不存在');
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                log('✗ Canvas上下文获取失败');
+                return;
+            }
+            
+            log('✓ Canvas正常');
+            
+            // 模拟游戏循环
+            let counter = 0;
+            const gameLoop = () => {
+                // 清除画布
+                ctx.fillStyle = '#111';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 绘制一个移动的方块
+                ctx.fillStyle = '#FF0D72';
+                ctx.fillRect(50 + counter % 200, 50 + Math.sin(counter/10)*20, 30, 30);
+                
+                counter += 2;
+                
+                if (counter < 500) { // 运行一段时间后停止
+                    setTimeout(gameLoop, 50);
+                } else {
+                    log('游戏循环演示完成');
+                }
+            };
+            
+            gameLoop();
+            log('✓ 游戏循环已启动');
+        }
+        
+        // 页面加载后初始化
+        window.onload = function() {
+            log('页面加载完成');
+            log('准备调试环境...');
+        };
+    </script>
+</body>
+</html>
