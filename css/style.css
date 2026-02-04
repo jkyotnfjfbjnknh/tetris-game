@@ -9,19 +9,18 @@ body {
     background: linear-gradient(135deg, #1a1a2e, #16213e);
     color: #fff;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
 }
 
 .game-container {
-    text-align: center;
     background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 h1 {
@@ -29,6 +28,17 @@ h1 {
     margin-bottom: 20px;
     font-size: 2.5em;
     text-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
+}
+
+.game-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.game-left {
+    flex: 1;
+    min-width: 400px;
 }
 
 .game-info {
@@ -46,11 +56,12 @@ h1 {
 }
 
 .game-board {
-    display: inline-block;
+    display: block;
     background: #000;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    margin: 20px 0;
 }
 
 #board {
@@ -61,7 +72,7 @@ h1 {
 .controls {
     margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
@@ -130,24 +141,30 @@ button:hover {
 }
 
 .touch-controls {
-    margin-top: 20px;
     display: none;
+    min-width: 180px;
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-left: auto;
 }
 
-.control-row {
+.control-column {
     display: flex;
-    gap: 10px;
-    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .control-btn {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
+    width: 70px;
+    height: 70px;
+    font-size: 1.5em;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
     background: #4ecca3;
     color: #000;
     border: none;
@@ -156,15 +173,66 @@ button:hover {
 }
 
 .control-btn.special {
-    width: 80px;
-    height: 80px;
-    font-size: 32px;
+    width: 70px;
+    height: 70px;
+    font-size: 1.5em;
     background: #ff6b6b;
 }
 
 .control-btn:active {
     transform: scale(0.9);
     background: #3da58a;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .game-content {
+        flex-direction: column;
+    }
+    
+    .game-left {
+        min-width: 100%;
+    }
+    
+    .touch-controls {
+        display: flex;
+        position: static;
+        order: -1; /* 移动到顶部 */
+        margin-left: 0;
+        margin-top: 20px;
+        justify-content: center;
+    }
+    
+    .control-column {
+        flex-direction: row;
+    }
+    
+    .game-container {
+        padding: 10px;
+        zoom: 0.8;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .next-piece, .game-controls {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .control-btn.special {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
 }
 
 /* 响应式设计 */
