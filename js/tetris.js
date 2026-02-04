@@ -309,19 +309,20 @@ function init() {
     // 初始化游戏板
     board = createMatrix(COLS, ROWS);
     
-    // 重置玩家
-    player.nextPiece = createPiece();
-    resetPlayer();
+    // 初始化分数显示
+    document.getElementById('score').textContent = score;
+    document.getElementById('level').textContent = level;
+    document.getElementById('lines').textContent = lines;
     
     // 绑定事件
     document.addEventListener('keydown', event => {
+        if (paused || gameOver) return;
+        
         if (event.keyCode === 80) { // P键暂停
             paused = !paused;
             if (!paused) update();
             return;
         }
-        
-        if (paused || gameOver) return;
         
         switch(event.keyCode) {
             case 37: // 左箭头
@@ -362,6 +363,12 @@ function init() {
             resetPlayer();
         }
         
+        // 如果还没开始游戏，初始化第一个方块
+        if (!player.matrix) {
+            player.nextPiece = createPiece();
+            resetPlayer();
+        }
+        
         paused = !paused;
         if (!paused) {
             lastTime = performance.now();
@@ -387,13 +394,18 @@ function init() {
         player.nextPiece = createPiece();
         resetPlayer();
         
-        // 重新开始游戏循环
-        lastTime = performance.now();
-        update();
+        // 如果没有暂停，开始游戏循环
+        if (!paused) {
+            lastTime = performance.now();
+            update();
+        }
     });
     
     // 初始化时不立即开始游戏，等待用户点击开始按钮
     paused = true;
+    
+    // 初始绘制
+    draw();
 }
 
 // 触屏控制事件绑定
