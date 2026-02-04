@@ -276,11 +276,54 @@ function resetPlayer() {
 
 // 绘制游戏板
 function draw() {
+    // 直接使用像素值绘制，而不是缩放后的网格
     ctx.fillStyle = '#111';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    drawMatrix(board, {x: 0, y: 0});
-    drawMatrix(player.matrix, player.pos);
+    // 绘制固定的游戏板背景网格
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 0.5;
+    for (let x = 0; x <= COLS; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * BLOCK_SIZE, 0);
+        ctx.lineTo(x * BLOCK_SIZE, ROWS * BLOCK_SIZE);
+        ctx.stroke();
+    }
+    for (let y = 0; y <= ROWS; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * BLOCK_SIZE);
+        ctx.lineTo(COLS * BLOCK_SIZE, y * BLOCK_SIZE);
+        ctx.stroke();
+    }
+    
+    // 绘制已固定的方块
+    board.forEach((row, y) => {
+        row.forEach((value, x) => {
+            if (value !== 0) {
+                ctx.fillStyle = COLORS[value];
+                ctx.fillRect(
+                    x * BLOCK_SIZE,
+                    y * BLOCK_SIZE,
+                    BLOCK_SIZE - 1,
+                    BLOCK_SIZE - 1
+                );
+                
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(
+                    x * BLOCK_SIZE,
+                    y * BLOCK_SIZE,
+                    BLOCK_SIZE - 1,
+                    BLOCK_SIZE - 1
+                );
+            }
+        });
+    });
+    
+    // 绘制当前活动的方块
+    if (player.matrix) {
+        drawMatrix(player.matrix, player.pos);
+    }
 }
 
 // 更新游戏状态
